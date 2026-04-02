@@ -7,7 +7,7 @@ const getAi = () => new GoogleGenAI({ apiKey: process.env.API_KEY || process.env
 const fastModelId = "gemini-3-flash-preview";
 const complexModelId = "gemini-3.1-pro-preview";
 const mapsModelId = "gemini-3-flash-preview";
-const visionProModelId = "gemini-3.1-pro-preview";
+const visionProModelId = "gemini-3-flash-preview";
 const ttsModelId = "gemini-2.5-flash-preview-tts";
 
 const cleanJson = (text: string): string => {
@@ -77,9 +77,9 @@ export const analyzeFoodImage = async (base64Image: string): Promise<ScanResult>
   const prompt = `Act as the Fridgeometer Ultra-Precision Molecular Scanner. Your primary priority is food safety and mould detection.
 
   IMAGE ANALYSIS TASKS:
-  1. **MOULD DETECTION**: Examine the surface textures with extreme scrutiny. Look for fuzz, discolored spores, mycelium, or slime. Use 'googleSearch' to verify symptoms.
+  1. **MOULD DETECTION**: Examine the surface textures with extreme scrutiny. Look for fuzz, discolored spores, mycelium, or slime.
   2. **BRAND & VARIETY**: Identify the exact brand and variety.
-  3. **PRICE LOGGING**: Find the current US market average unit price via 'googleSearch'.
+  3. **PRICE LOGGING**: Estimate the current US market average unit price.
   4. **NUTRITION**: Estimate calories per serving.
   5. **LOGISTICS**: Determine category (Produce, Dairy, Meat, Beverage, Grains, Canned, Snacks, Other) and storage location (Fridge, Freezer, Pantry).
   6. **EXPIRY**: Predict safety window (YYYY-MM-DD).
@@ -102,18 +102,41 @@ export const analyzeFoodImage = async (base64Image: string): Promise<ScanResult>
   Be strictly objective. If there is a risk of mould, mark 'mouldDetected' as true.`;
 
   try {
+    console.log("Starting Neural Scan with model:", visionProModelId);
     const response = await freshAi.models.generateContent({
       model: visionProModelId,
       contents: { parts: [{ inlineData: { mimeType: "image/jpeg", data: base64Image } }, { text: prompt }] },
       config: {
-        tools: [{ googleSearch: {} }],
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            name: { type: Type.STRING },
+            expiryDate: { type: Type.STRING, description: "YYYY-MM-DD format" },
+            category: { 
+              type: Type.STRING, 
+              enum: ["Produce", "Dairy", "Meat", "Beverage", "Grains", "Canned", "Snacks", "Other"]
+            },
+            storageLocation: { 
+              type: Type.STRING, 
+              enum: ["Fridge", "Freezer", "Pantry"]
+            },
+            quantity: { type: Type.NUMBER },
+            unit: { type: Type.STRING },
+            confidence: { type: Type.NUMBER },
+            brandInfo: { type: Type.STRING },
+            mouldDetected: { type: Type.BOOLEAN },
+            calories: { type: Type.INTEGER },
+            estimatedPrice: { type: Type.NUMBER }
+          },
+          required: ["name", "expiryDate", "category", "storageLocation", "quantity", "unit", "confidence", "brandInfo", "mouldDetected", "calories", "estimatedPrice"]
+        }
       }
     });
     
-    // Extract JSON from text manually since nano banana models don't support responseSchema/responseMimeType
     const text = response.text ?? '{}';
-    const jsonStr = cleanJson(text);
-    return JSON.parse(jsonStr) as ScanResult;
+    console.log("Neural Scan Result Text:", text);
+    return JSON.parse(text) as ScanResult;
   } catch (error: any) { 
     console.error("Neural Scanner Failure:", error);
     throw error; 
