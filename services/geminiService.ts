@@ -4,7 +4,7 @@ import { ScanResult, Category, StorageLocation, FoodItem, SearchResponse, PlaceR
 
 const getAi = () => {
   const key = import.meta.env.VITE_GEMINI_API_KEY || process.env.API_KEY;
-  return new GoogleGenAI(key);
+  return new GoogleGenAI({ apiKey: key });
 };
 
 const fastModelId = "gemini-3.1-flash"; 
