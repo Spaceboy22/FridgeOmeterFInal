@@ -670,10 +670,16 @@ const InventoryView: React.FC<{
 
     setLoadingScan(true);
     try {
+      console.log("Calling analyzeFoodImage...");
       const res = await GeminiService.analyzeFoodImage(base64);
+      console.log("analyzeFoodImage result:", res);
       setScanResult(res);
       // Trigger vocal report immediately
-      await GeminiService.speakStatusReport(res, user.isGamified);
+      try {
+        await GeminiService.speakStatusReport(res, user.isGamified);
+      } catch (ttsErr) {
+        console.error("TTS Error:", ttsErr);
+      }
     } catch (e: any) {
       if (e.message?.includes('PERMISSION_DENIED') || e.message?.includes('Requested entity was not found')) {
         onKeyPrompt().then(s => { 
