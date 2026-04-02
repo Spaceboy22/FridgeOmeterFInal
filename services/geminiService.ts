@@ -3,7 +3,13 @@ import { GoogleGenAI, Type, Chat, GenerateContentResponse, Modality } from "@goo
 import { ScanResult, Category, StorageLocation, FoodItem, SearchResponse, PlaceResult, MealSuggestion, Recipe } from "../types";
 
 const getAi = () => {
-  const key = import.meta.env.VITE_GEMINI_API_KEY || process.env.API_KEY;
+  const meta = (import.meta as any);
+  const key = meta.env?.VITE_GEMINI_API_KEY || process.env.API_KEY || "";
+  
+  if (!key) {
+    console.warn("Gemini API Key is missing! Check your Vercel Environment Variables.");
+  }
+
   return new GoogleGenAI({ apiKey: key });
 };
 
