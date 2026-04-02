@@ -2,7 +2,10 @@
 import { GoogleGenAI, Type, Chat, GenerateContentResponse, Modality } from "@google/genai";
 import { ScanResult, Category, StorageLocation, FoodItem, SearchResponse, PlaceResult, MealSuggestion, Recipe } from "../types";
 
-const getAi = () => new GoogleGenAI({ apiKey: process.env.API_KEY });
+const getAi = () => {
+  const key = import.meta.env.VITE_GEMINI_API_KEY || process.env.API_KEY;
+  return new GoogleGenAI(key);
+};
 
 const fastModelId = "gemini-3.1-flash"; 
 const complexModelId = "gemini-3.1-pro";
