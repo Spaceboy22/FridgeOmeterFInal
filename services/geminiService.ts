@@ -2,22 +2,13 @@
 import { GoogleGenAI, Type, Chat, GenerateContentResponse, Modality } from "@google/genai";
 import { ScanResult, Category, StorageLocation, FoodItem, SearchResponse, PlaceResult, MealSuggestion, Recipe } from "../types";
 
-const getAi = () => {
-  const meta = (import.meta as any);
-  const key = meta.env?.VITE_GEMINI_API_KEY || process.env.API_KEY || "";
-  
-  if (!key) {
-    console.warn("Gemini API Key is missing! Check your Vercel Environment Variables.");
-  }
+const getAi = () => new GoogleGenAI({ apiKey: process.env.API_KEY || process.env.GEMINI_API_KEY || '' });
 
-  return new GoogleGenAI({ apiKey: key });
-};
-
-const fastModelId = "gemini-3.1-flash"; 
-const complexModelId = "gemini-3.1-pro";
-const mapsModelId = "gemini-3.1-flash";
-const visionProModelId = "gemini-3.1-pro";
-const ttsModelId = "gemini-2.5-flash-tts";
+const fastModelId = "gemini-3-flash-preview";
+const complexModelId = "gemini-3.1-pro-preview";
+const mapsModelId = "gemini-3-flash-preview";
+const visionProModelId = "gemini-3.1-pro-preview";
+const ttsModelId = "gemini-2.5-flash-preview-tts";
 
 const cleanJson = (text: string): string => {
   if (!text) return '{}';
@@ -46,7 +37,7 @@ export const estimateItemPrice = async (itemName: string): Promise<number> => {
 
   try {
     const response = await freshAi.models.generateContent({
-      model: complexModelId,
+      model: fastModelId,
       contents: prompt,
       config: {
         tools: [{ googleSearch: {} }],
@@ -54,8 +45,9 @@ export const estimateItemPrice = async (itemName: string): Promise<number> => {
     });
     const match = (response.text || "").match(/\d+(\.\d+)?/);
     return match ? parseFloat(match[0]) : 5.0;
-  } catch (error) {
-    return 5.0;
+  } catch (error: any) {
+    console.error("Price Estimation Error:", error);
+    throw error;
   }
 };
 
@@ -66,7 +58,7 @@ export const estimateItemCalories = async (itemName: string): Promise<number> =>
 
   try {
     const response = await freshAi.models.generateContent({
-      model: complexModelId,
+      model: fastModelId,
       contents: prompt,
       config: {
         tools: [{ googleSearch: {} }],
@@ -74,8 +66,9 @@ export const estimateItemCalories = async (itemName: string): Promise<number> =>
     });
     const match = (response.text || "").match(/\d+/);
     return match ? parseInt(match[0]) : 0;
-  } catch (error) {
-    return 0;
+  } catch (error: any) {
+    console.error("Calorie Estimation Error:", error);
+    throw error;
   }
 };
 
@@ -114,7 +107,6 @@ export const analyzeFoodImage = async (base64Image: string): Promise<ScanResult>
       contents: { parts: [{ inlineData: { mimeType: "image/jpeg", data: base64Image } }, { text: prompt }] },
       config: {
         tools: [{ googleSearch: {} }],
-        thinkingConfig: { thinkingBudget: 32000 }
       }
     });
     
@@ -196,7 +188,7 @@ export const generateRecipes = async (items: FoodItem[]): Promise<Recipe[]> => {
 
   try {
     const response = await freshAi.models.generateContent({
-      model: complexModelId,
+      model: fastModelId,
       contents: prompt,
       config: {
         tools: [{ googleSearch: {} }],
@@ -223,14 +215,15 @@ export const generateRecipes = async (items: FoodItem[]): Promise<Recipe[]> => {
     const text = response.text ?? '[]';
     return JSON.parse(cleanJson(text)) as Recipe[];
   } catch (error: any) {
-    return [];
+    console.error("Recipe Generation Error:", error);
+    throw error;
   }
 };
 
 export const createChatSession = (lang: string = "English") => {
   const freshAi = getAi();
   return freshAi.chats.create({
-    model: complexModelId,
+    model: fastModelId,
     config: { systemInstruction: `Fridgeometer Assistant. Language: ${lang}. Futuristic, robotic tone.` }
   });
 };
@@ -240,7 +233,7 @@ export const generateMealPlan = async (items: FoodItem[]): Promise<MealSuggestio
   const prompt = `Items: ${items.map(i => i.name).join(', ')}. Create 3-day meal strategy.`;
   try {
     const response = await freshAi.models.generateContent({
-      model: complexModelId,
+      model: fastModelId,
       contents: prompt,
       config: {
         responseMimeType: "application/json",
@@ -261,5 +254,8 @@ export const generateMealPlan = async (items: FoodItem[]): Promise<MealSuggestio
     });
     const text = response.text ?? '[]';
     return JSON.parse(cleanJson(text)) as MealSuggestion[];
-  } catch (e) { return []; }
+  } catch (e: any) { 
+    console.error("Meal Plan Error:", e);
+    throw e; 
+  }
 };

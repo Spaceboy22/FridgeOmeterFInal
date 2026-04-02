@@ -95,16 +95,16 @@ export const getStats = (): UserStats => {
 
 export const updateStatsForAction = (item: FoodItem, action: 'consumed' | 'tossed' | 'composted'): UserStats => {
   const current = getStats();
-  const quantity = item.quantity || 1;
-  const unitPrice = item.estimatedPrice || 5.0;
-  const totalValue = unitPrice * quantity;
+  const quantity = Number(item.quantity) || 1;
+  const unitPrice = Number(item.estimatedPrice) || 5.0;
+  const totalValue = Number(unitPrice * quantity) || 0;
   const today = new Date().toISOString().split('T')[0];
   
   // CO2 multiplier based on category (rough estimate in kg per dollar)
   const co2Multipliers: Record<Category, number> = {
     Meat: 2.0, Dairy: 1.2, Produce: 0.5, Beverage: 0.3, Grains: 0.4, Canned: 0.3, Snacks: 0.4, Other: 0.5
   };
-  const co2Weight = totalValue * (co2Multipliers[item.category] || 0.5);
+  const co2Weight = Number(totalValue * (co2Multipliers[item.category] || 0.5)) || 0;
 
   // Initialize daily log if not exists
   let dailyLog = current.dailyLogs.find(log => log.date === today);

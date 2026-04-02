@@ -543,7 +543,7 @@ const HealthDashboardView: React.FC<{ stats: UserStats, user: UserProfile, onBac
   }));
 
   const calorieGoal = 2000;
-  const calorieProgress = Math.min(100, (todayLog.calories / calorieGoal) * 100);
+  const calorieProgress = Math.min(100, ((Number(todayLog.calories) || 0) / calorieGoal) * 100);
 
   return (
     <div className="space-y-8 pb-10 animate-in slide-in-from-right-4 duration-500">
@@ -562,7 +562,7 @@ const HealthDashboardView: React.FC<{ stats: UserStats, user: UserProfile, onBac
         <div className={`lg:col-span-1 bg-white dark:bg-slate-800 p-8 ${user.isGamified ? 'rounded-blob' : 'rounded-[3rem]'} shadow-sm border border-slate-100 dark:border-slate-700 space-y-8`}>
           <div className="text-center space-y-2">
             <p className="text-xs font-black uppercase text-slate-400 tracking-widest">Today's Calories</p>
-            <p className="text-6xl font-black italic tracking-tighter text-emerald-500">{todayLog.calories}</p>
+            <p className="text-6xl font-black italic tracking-tighter text-emerald-500">{Number(todayLog.calories) || 0}</p>
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Goal: {calorieGoal} kcal</p>
           </div>
 
@@ -570,28 +570,28 @@ const HealthDashboardView: React.FC<{ stats: UserStats, user: UserProfile, onBac
             <div className="space-y-2">
               <div className="flex justify-between text-[10px] font-black uppercase italic tracking-widest">
                 <span className="text-indigo-500">Protein</span>
-                <span>{todayLog.protein}g</span>
+                <span>{Number(todayLog.protein) || 0}g</span>
               </div>
               <div className="h-2 w-full bg-slate-50 dark:bg-slate-900 rounded-full overflow-hidden">
-                <div className="h-full bg-indigo-500" style={{ width: `${Math.min(100, (todayLog.protein / 150) * 100)}%` }}></div>
+                <div className="h-full bg-indigo-500" style={{ width: `${Math.min(100, ((Number(todayLog.protein) || 0) / 150) * 100)}%` }}></div>
               </div>
             </div>
             <div className="space-y-2">
               <div className="flex justify-between text-[10px] font-black uppercase italic tracking-widest">
                 <span className="text-amber-500">Carbs</span>
-                <span>{todayLog.carbs}g</span>
+                <span>{Number(todayLog.carbs) || 0}g</span>
               </div>
               <div className="h-2 w-full bg-slate-50 dark:bg-slate-900 rounded-full overflow-hidden">
-                <div className="h-full bg-amber-500" style={{ width: `${Math.min(100, (todayLog.carbs / 250) * 100)}%` }}></div>
+                <div className="h-full bg-amber-500" style={{ width: `${Math.min(100, ((Number(todayLog.carbs) || 0) / 250) * 100)}%` }}></div>
               </div>
             </div>
             <div className="space-y-2">
               <div className="flex justify-between text-[10px] font-black uppercase italic tracking-widest">
                 <span className="text-rose-500">Fat</span>
-                <span>{todayLog.fat}g</span>
+                <span>{Number(todayLog.fat) || 0}g</span>
               </div>
               <div className="h-2 w-full bg-slate-50 dark:bg-slate-900 rounded-full overflow-hidden">
-                <div className="h-full bg-rose-500" style={{ width: `${Math.min(100, (todayLog.fat / 70) * 100)}%` }}></div>
+                <div className="h-full bg-rose-500" style={{ width: `${Math.min(100, ((Number(todayLog.fat) || 0) / 70) * 100)}%` }}></div>
               </div>
             </div>
           </div>
@@ -854,16 +854,16 @@ const EditItemModal: React.FC<{ user: UserProfile, item: FoodItem, onUpdate: (i:
            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
                  <label className="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Quantity</label>
-                 <input type="number" value={editQuantity} onChange={e => setEditQuantity(Number(e.target.value))} className={`w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 ${user.isGamified ? 'rounded-blob' : 'rounded-2xl'} px-6 py-4 text-sm font-black focus:border-violet-500 outline-none`} />
+                 <input type="number" value={editQuantity || 0} onChange={e => setEditQuantity(Number(e.target.value) || 0)} className={`w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 ${user.isGamified ? 'rounded-blob' : 'rounded-2xl'} px-6 py-4 text-sm font-black focus:border-violet-500 outline-none`} />
               </div>
               <div className="space-y-1">
                  <label className="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">{user.isGamified ? 'Gold Cost' : 'Price per Unit'}</label>
-                 <input type="number" step="0.01" value={editPrice} onChange={e => setEditPrice(Number(e.target.value))} className={`w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 ${user.isGamified ? 'rounded-blob' : 'rounded-2xl'} px-6 py-4 text-sm font-black focus:border-violet-500 outline-none`} />
+                 <input type="number" step="0.01" value={editPrice || 0} onChange={e => setEditPrice(Number(e.target.value) || 0)} className={`w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 ${user.isGamified ? 'rounded-blob' : 'rounded-2xl'} px-6 py-4 text-sm font-black focus:border-violet-500 outline-none`} />
               </div>
            </div>
            <div className="space-y-1">
               <label className="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">{user.isGamified ? 'Power Points (Calories)' : 'Calories per Serving'}</label>
-              <input type="number" value={editCalories} onChange={e => setEditCalories(Number(e.target.value))} className={`w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 ${user.isGamified ? 'rounded-blob' : 'rounded-2xl'} px-6 py-4 text-sm font-black focus:border-violet-500 outline-none`} />
+              <input type="number" value={editCalories || 0} onChange={e => setEditCalories(Number(e.target.value) || 0)} className={`w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 ${user.isGamified ? 'rounded-blob' : 'rounded-2xl'} px-6 py-4 text-sm font-black focus:border-violet-500 outline-none`} />
            </div>
            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
@@ -919,16 +919,16 @@ const ResultVerificationModal: React.FC<{ user: UserProfile, scanResult: ScanRes
            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
                  <label className="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Quantity</label>
-                 <input type="number" value={editQuantity} onChange={e => setEditQuantity(Number(e.target.value))} className={`w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 ${user.isGamified ? 'rounded-blob' : 'rounded-2xl'} px-6 py-4 text-sm font-black focus:border-violet-500 outline-none`} />
+                 <input type="number" value={editQuantity || 0} onChange={e => setEditQuantity(Number(e.target.value) || 0)} className={`w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 ${user.isGamified ? 'rounded-blob' : 'rounded-2xl'} px-6 py-4 text-sm font-black focus:border-violet-500 outline-none`} />
               </div>
               <div className="space-y-1">
                  <label className="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">{user.isGamified ? 'Gold' : 'Price'}</label>
-                 <input type="number" step="0.01" value={editPrice} onChange={e => setEditPrice(Number(e.target.value))} className={`w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 ${user.isGamified ? 'rounded-blob' : 'rounded-2xl'} px-6 py-4 text-sm font-black focus:border-violet-500 outline-none`} />
+                 <input type="number" step="0.01" value={editPrice || 0} onChange={e => setEditPrice(Number(e.target.value) || 0)} className={`w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 ${user.isGamified ? 'rounded-blob' : 'rounded-2xl'} px-6 py-4 text-sm font-black focus:border-violet-500 outline-none`} />
               </div>
            </div>
            <div className="space-y-1">
               <label className="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">{user.isGamified ? 'Magic Power' : 'Calories'}</label>
-              <input type="number" value={editCalories} onChange={e => setEditCalories(Number(e.target.value))} className={`w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 ${user.isGamified ? 'rounded-blob' : 'rounded-2xl'} px-6 py-4 text-sm font-black focus:border-violet-500 outline-none`} />
+              <input type="number" value={editCalories || 0} onChange={e => setEditCalories(Number(e.target.value) || 0)} className={`w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 ${user.isGamified ? 'rounded-blob' : 'rounded-2xl'} px-6 py-4 text-sm font-black focus:border-violet-500 outline-none`} />
            </div>
            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
@@ -963,6 +963,11 @@ const RecipesView: React.FC<{ inventory: FoodItem[], user: UserProfile }> = ({ i
     try {
       const results = await GeminiService.generateRecipes(inventory);
       setRecipes(results);
+    } catch (err: any) {
+      if (err.message?.includes('PERMISSION_DENIED') || err.message?.includes('Requested entity was not found')) {
+        const selected = await (window as any).aistudio?.openSelectKey?.();
+        if (selected) fetchRecipes();
+      }
     } finally {
       setLoading(false);
     }
@@ -1124,6 +1129,11 @@ const AddAssetView: React.FC<{ user: UserProfile, onCancel: () => void, onAdd: (
       const caloriePromise = GeminiService.estimateItemCalories(form.name);
       const [price, calories] = await Promise.all([pricePromise, caloriePromise]);
       setForm(p => ({ ...p, estimatedPrice: price, calories: calories }));
+    } catch (err: any) {
+      if (err.message?.includes('PERMISSION_DENIED') || err.message?.includes('Requested entity was not found')) {
+        const selected = await onKeyPrompt();
+        if (selected) lookupAssetData();
+      }
     } finally {
       setSearchingData(false);
     }
@@ -1145,16 +1155,16 @@ const AddAssetView: React.FC<{ user: UserProfile, onCancel: () => void, onAdd: (
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">{user.isGamified ? 'Value ($)' : 'Unit Price ($)'}</label>
-              <input type="number" step="0.01" value={form.estimatedPrice} onChange={e => setForm(p => ({ ...p, estimatedPrice: parseFloat(e.target.value) }))} className={`w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 ${user.isGamified ? 'rounded-blob' : 'rounded-2xl'} px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-violet-500 outline-none`} />
+              <input type="number" step="0.01" value={form.estimatedPrice || 0} onChange={e => setForm(p => ({ ...p, estimatedPrice: parseFloat(e.target.value) || 0 }))} className={`w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 ${user.isGamified ? 'rounded-blob' : 'rounded-2xl'} px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-violet-500 outline-none`} />
             </div>
             <div className="space-y-2">
               <label className="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">Quantity</label>
-              <input type="number" value={form.quantity} onChange={e => setForm(p => ({ ...p, quantity: parseInt(e.target.value) }))} className={`w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 ${user.isGamified ? 'rounded-blob' : 'rounded-2xl'} px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-violet-500 outline-none`} />
+              <input type="number" value={form.quantity || 0} onChange={e => setForm(p => ({ ...p, quantity: parseInt(e.target.value) || 0 }))} className={`w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 ${user.isGamified ? 'rounded-blob' : 'rounded-2xl'} px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-violet-500 outline-none`} />
             </div>
           </div>
           <div className="space-y-2">
             <label className="text-[10px] font-black uppercase text-slate-400 ml-2 tracking-widest">{user.isGamified ? 'Power (Calories)' : 'Calories per Serving'}</label>
-            <input type="number" value={form.calories} onChange={e => setForm(p => ({ ...p, calories: Number(e.target.value) }))} className={`w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 ${user.isGamified ? 'rounded-blob' : 'rounded-2xl'} px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-violet-500 outline-none`} />
+            <input type="number" value={form.calories || 0} onChange={e => setForm(p => ({ ...p, calories: Number(e.target.value) || 0 }))} className={`w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 ${user.isGamified ? 'rounded-blob' : 'rounded-2xl'} px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-violet-500 outline-none`} />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
@@ -1244,7 +1254,7 @@ const ScannerView: React.FC<{
       return;
     }
     setActive(true); setLoading(true);
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || process.env.GEMINI_API_KEY || '' });
     audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
 
     try {
@@ -1252,7 +1262,7 @@ const ScannerView: React.FC<{
       if (videoRef.current) videoRef.current.srcObject = stream;
 
       const sessionPromise = ai.live.connect({
-        model: 'gemini-2.5-flash-native-audio-preview-12-2025',
+        model: 'gemini-3.1-flash-live-preview',
         callbacks: {
           onopen: () => {
             setLoading(false);
@@ -1270,7 +1280,7 @@ const ScannerView: React.FC<{
                     const base64 = (reader.result as string).split(',')[1];
                     sessionPromise.then(s => { 
                       if (sessionRef.current) {
-                        s.sendRealtimeInput({ media: { data: base64, mimeType: 'image/jpeg' } }); 
+                        s.sendRealtimeInput({ video: { data: base64, mimeType: 'image/jpeg' } }); 
                       }
                     });
                   };
@@ -1289,7 +1299,7 @@ const ScannerView: React.FC<{
               const base64 = encode(new Uint8Array(int16.buffer));
               sessionPromise.then(s => { 
                 if (sessionRef.current) {
-                  s.sendRealtimeInput({ media: { data: base64, mimeType: 'audio/pcm;rate=16000' } }); 
+                  s.sendRealtimeInput({ audio: { data: base64, mimeType: 'audio/pcm;rate=16000' } }); 
                 }
               });
             };
@@ -1438,11 +1448,20 @@ const ChatHub: React.FC<{ user: UserProfile }> = ({ user }) => {
     setLoading(true);
 
     try {
+      if (!chatRef.current) chatRef.current = GeminiService.createChatSession(user.language);
       const response = await chatRef.current.sendMessage({ message: input });
       const modelMsg: ChatMessage = { id: (Date.now() + 1).toString(), role: 'model', text: response.text || 'Protocol anomaly detected.' };
       setMessages(prev => [...prev, modelMsg]);
-    } catch (e) {
-      setMessages(prev => [...prev, { id: 'err', role: 'model', text: user.isGamified ? "Uplink down! Check your magic link." : "Neural uplink interrupted." }]);
+    } catch (e: any) {
+      if (e.message?.includes('PERMISSION_DENIED') || e.message?.includes('Requested entity was not found')) {
+        const selected = await (window as any).aistudio?.openSelectKey?.();
+        if (selected) {
+          chatRef.current = GeminiService.createChatSession(user.language);
+          sendMessage();
+        }
+      } else {
+        setMessages(prev => [...prev, { id: 'err', role: 'model', text: user.isGamified ? "Uplink down! Check your magic link." : "Neural uplink interrupted." }]);
+      }
     } finally {
       setLoading(false);
     }
