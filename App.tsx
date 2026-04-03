@@ -661,10 +661,13 @@ const InventoryView: React.FC<{
   const filtered = items.filter(i => i.storageLocation === activeTab);
 
   const handleFileUpload = async (base64: string) => {
+    console.log("handleFileUpload triggered. Base64 length:", base64.length);
     // Deep scans using Gemini 3 Pro require a paid key
     const hasKey = await (window as any).aistudio?.hasSelectedApiKey?.();
+    console.log("Has API key:", hasKey);
     if (!hasKey) {
       const selected = await onKeyPrompt();
+      console.log("Key prompt result:", selected);
       if (!selected) return;
     }
 
@@ -681,6 +684,7 @@ const InventoryView: React.FC<{
         console.error("TTS Error:", ttsErr);
       }
     } catch (e: any) {
+      console.error("Neural Scan Error:", e);
       if (e.message?.includes('PERMISSION_DENIED') || e.message?.includes('Requested entity was not found')) {
         onKeyPrompt().then(s => { 
           if (s) {
@@ -688,7 +692,7 @@ const InventoryView: React.FC<{
           }
         });
       } else {
-        onError("Analysis failed.");
+        onError("Analysis failed: " + (e.message || "Unknown error"));
       }
     } finally {
       setLoadingScan(false);
