@@ -7,7 +7,7 @@ const getAi = () => new GoogleGenAI({ apiKey: process.env.API_KEY || process.env
 const fastModelId = "gemini-3-flash-preview";
 const complexModelId = "gemini-3.1-pro-preview";
 const mapsModelId = "gemini-3-flash-preview";
-const visionProModelId = "gemini-3-flash-preview";
+const visionProModelId = "gemini-3.1-pro-preview";
 const ttsModelId = "gemini-2.5-flash-preview-tts";
 
 const cleanJson = (text: string): string => {
@@ -102,7 +102,7 @@ export const analyzeFoodImage = async (base64Image: string): Promise<ScanResult>
   Be strictly objective. If there is a risk of mould, mark 'mouldDetected' as true.`;
 
   try {
-    console.log("Starting Neural Scan with model:", visionProModelId);
+    console.log("Starting Neural Scan with model:", visionProModelId, "Base64 length:", base64Image.length);
     const response = await freshAi.models.generateContent({
       model: visionProModelId,
       contents: { parts: [{ inlineData: { mimeType: "image/jpeg", data: base64Image } }, { text: prompt }] },
@@ -129,14 +129,23 @@ export const analyzeFoodImage = async (base64Image: string): Promise<ScanResult>
             calories: { type: Type.INTEGER },
             estimatedPrice: { type: Type.NUMBER }
           },
-          required: ["name", "expiryDate", "category", "storageLocation", "quantity", "unit", "confidence", "brandInfo", "mouldDetected", "calories", "estimatedPrice"]
+          required: ["name", "expiryDate", "category", "storageLocation", "quantity", "unit", "confidence", "mouldDetected"]
         }
       }
     });
     
     const text = response.text ?? '{}';
     console.log("Neural Scan Result Text:", text);
-    return JSON.parse(text) as ScanResult;
+    const parsed = JSON.parse(text);
+    
+    // Ensure numeric fields are numbers
+    return {
+      ...parsed,
+      quantity: Number(parsed.quantity) || 1,
+      confidence: Number(parsed.confidence) || 0.5,
+      calories: Number(parsed.calories) || 0,
+      estimatedPrice: Number(parsed.estimatedPrice) || 0
+    } as ScanResult;
   } catch (error: any) { 
     console.error("Neural Scanner Failure:", error);
     throw error; 
