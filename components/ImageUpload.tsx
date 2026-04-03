@@ -16,11 +16,37 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageSelected, isLoading })
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const result = reader.result as string;
-        setPreview(result);
-        // Remove data URL prefix for API
-        const base64 = result.split(',')[1];
-        onImageSelected(base64);
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          
+          // Max dimension 1024px
+          const maxDim = 1024;
+          if (width > height) {
+            if (width > maxDim) {
+              height *= maxDim / width;
+              width = maxDim;
+            }
+          } else {
+            if (height > maxDim) {
+              width *= maxDim / height;
+              height = maxDim;
+            }
+          }
+          
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, width, height);
+          
+          const resizedBase64 = canvas.toDataURL('image/jpeg', 0.85);
+          setPreview(resizedBase64);
+          const base64 = resizedBase64.split(',')[1];
+          onImageSelected(base64);
+        };
+        img.src = reader.result as string;
       };
       reader.readAsDataURL(file);
     }
