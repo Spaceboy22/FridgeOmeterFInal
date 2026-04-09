@@ -74,7 +74,7 @@ export const estimateItemCalories = async (itemName: string): Promise<number> =>
 
 export const analyzeFoodImage = async (base64Image: string): Promise<ScanResult> => {
   const freshAi = getAi();
-  const prompt = `Act as the Fridgeometer Ultra-Precision Molecular Scanner... (rest of prompt)`;
+  const prompt = `Act as the Fridgeometer Ultra-Precision Molecular Scanner. Your primary priority is food safety and mould detection.;
 
   // 🔧 Step 1: Clean base64 string by removing the prefix
   const cleanBase64 = base64Image.replace(/^data:image\/\w+;base64,/, "");
