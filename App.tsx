@@ -191,7 +191,7 @@ const App: React.FC = () => {
                className={`p-2 rounded-full transition-all flex items-center gap-2 border bouncy ${isNeuralSyncEnabled ? (user.isGamified ? 'bg-violet-100 border-violet-200 text-violet-700 dark:bg-violet-900/30 dark:border-violet-800' : 'bg-emerald-100 border-emerald-200 text-emerald-700 dark:bg-emerald-900/30 dark:border-emerald-800') : 'bg-slate-100 border-slate-200 text-slate-400 dark:bg-slate-800 dark:border-slate-700'}`}
              >
                <IconMic className={`w-4 h-4 ${isNeuralSyncEnabled ? 'animate-pulse' : ''}`} />
-               <span className="text-[10px] font-black uppercase hidden sm:inline">{isNeuralSyncEnabled ? (user.isGamified ? 'Magic Voice Active' : 'Neural Sync Active') : 'Mic Muted'}</span>
+               <span className="text-[10px] font-black uppercase hidden sm:inline">{isNeuralSyncEnabled ? (user.isGamified ? 'Magic Voice Active' : 'Mic On') : 'Mic Muted'}</span>
              </button>
              <button 
                onClick={() => {
@@ -340,7 +340,7 @@ const DashboardView: React.FC<{ stats: UserStats, user: UserProfile, inventory: 
             {user.isGamified ? 'Your Progress' : 'System Telemetry'}
           </p>
           <h2 className="text-4xl font-black tracking-tighter italic uppercase">
-            {user.isGamified ? 'HERO HUB' : 'MISSION CONTROL'}
+            {user.isGamified ? 'HERO HUB' : 'Dashboard'}
           </h2>
         </div>
         <div className="flex items-center gap-4 bg-white dark:bg-slate-800 px-6 py-3 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 bouncy">
@@ -430,7 +430,7 @@ const DashboardView: React.FC<{ stats: UserStats, user: UserProfile, inventory: 
       <div className={`bg-white dark:bg-slate-800 p-8 ${user.isGamified ? 'rounded-blob' : 'rounded-[3rem]'} shadow-sm border border-slate-100 dark:border-slate-700 space-y-8 animate-in slide-in-from-top-4 duration-700`}>
         <div className="flex justify-between items-center">
            <div className="space-y-1 text-left">
-              <h3 className="text-2xl font-black italic uppercase tracking-tighter">{user.isGamified ? 'SUSTAINABILITY QUEST' : 'WASTE ANALYSIS HUB'}</h3>
+              <h3 className="text-2xl font-black italic uppercase tracking-tighter">{user.isGamified ? 'SUSTAINABILITY QUEST' : 'Waste Insights'}</h3>
               <p className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em]">{user.isGamified ? 'Your Path to Eco-Mastery' : 'Molecular Lifecycle Telemetry'}</p>
            </div>
            <div className="flex gap-2">
