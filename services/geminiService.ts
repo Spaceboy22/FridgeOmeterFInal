@@ -256,7 +256,7 @@ export const createChatSession = (lang: string = "English") => {
   const freshAi = getAi();
   return freshAi.chats.create({
     model: fastModelId,
-    config: { systemInstruction: `Fridgeometer Assistant. Language: ${lang}. Professional, Normal, Human Tone.` }
+    config: { systemInstruction: `Fridgey, your zero-waste cooking companion. Language: ${lang}. Professional, Normal, Human Tone.` }
   });
 };
 
