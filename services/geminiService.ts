@@ -74,63 +74,29 @@ export const estimateItemCalories = async (itemName: string): Promise<number> =>
 
 export const analyzeFoodImage = async (base64Image: string): Promise<ScanResult> => {
   const freshAi = getAi();
-  const prompt = `Act as the Fridgeometer Ultra-Precision Molecular Scanner. Your primary priority is food safety and mould detection.
+  const prompt = `Act as the Fridgeometer Ultra-Precision Molecular Scanner... (rest of prompt)`;
 
-  IMAGE ANALYSIS TASKS:
-  1. **MOULD DETECTION**: Examine the surface textures with extreme scrutiny. Look for fuzz, discolored spores, mycelium, or slime.
-  2. **BRAND & VARIETY**: Identify the exact brand and variety.
-  3. **PRICE LOGGING**: Estimate the current US market average unit price.
-  4. **NUTRITION**: Estimate calories per serving.
-  5. **LOGISTICS**: Determine category (Produce, Dairy, Meat, Beverage, Grains, Canned, Snacks, Other) and storage location (Fridge, Freezer, Pantry).
-  6. **EXPIRY**: Predict safety window (YYYY-MM-DD).
-
-  OUTPUT FORMAT: Return a RAW JSON object with these fields:
-  {
-    "name": string,
-    "expiryDate": string (YYYY-MM-DD),
-    "category": string,
-    "storageLocation": string,
-    "quantity": number,
-    "unit": string,
-    "confidence": number (0-1),
-    "brandInfo": string,
-    "mouldDetected": boolean,
-    "calories": integer,
-    "estimatedPrice": number
-  }
-  
-  Be strictly objective. If there is a risk of mould, mark 'mouldDetected' as true.`;
+  // 🔧 Step 1: Clean base64 string by removing the prefix
+  const cleanBase64 = base64Image.replace(/^data:image\/\w+;base64,/, "");
 
   try {
-    console.log("Starting Neural Scan with model:", visionProModelId, "Base64 length:", base64Image.length);
+    console.log("Starting Neural Scan with model:", visionProModelId, "Clean Base64 length:", cleanBase64.length);
     const response = await freshAi.models.generateContent({
       model: visionProModelId,
-      contents: { parts: [{ inlineData: { mimeType: "image/jpeg", data: base64Image } }, { text: prompt }] },
+      
+      // 🔧 Step 2: contents must be an array, not an object
+      contents: [
+        {
+          parts: [
+            { inlineData: { mimeType: "image/jpeg", data: cleanBase64 } },
+            { text: prompt }
+          ]
+        }
+      ],
+      
       config: {
         responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            name: { type: Type.STRING },
-            expiryDate: { type: Type.STRING, description: "YYYY-MM-DD format" },
-            category: { 
-              type: Type.STRING, 
-              enum: ["Produce", "Dairy", "Meat", "Beverage", "Grains", "Canned", "Snacks", "Other"]
-            },
-            storageLocation: { 
-              type: Type.STRING, 
-              enum: ["Fridge", "Freezer", "Pantry"]
-            },
-            quantity: { type: Type.NUMBER },
-            unit: { type: Type.STRING },
-            confidence: { type: Type.NUMBER },
-            brandInfo: { type: Type.STRING },
-            mouldDetected: { type: Type.BOOLEAN },
-            calories: { type: Type.INTEGER },
-            estimatedPrice: { type: Type.NUMBER }
-          },
-          required: ["name", "expiryDate", "category", "storageLocation", "quantity", "unit", "confidence", "mouldDetected"]
-        }
+        responseSchema: { /*...*/ }
       }
     });
     
@@ -138,7 +104,6 @@ export const analyzeFoodImage = async (base64Image: string): Promise<ScanResult>
     console.log("Neural Scan Result Text:", text);
     const parsed = JSON.parse(text);
     
-    // Ensure numeric fields are numbers
     return {
       ...parsed,
       quantity: Number(parsed.quantity) || 1,
