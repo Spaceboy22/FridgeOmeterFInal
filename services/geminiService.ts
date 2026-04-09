@@ -75,7 +75,32 @@ export const estimateItemCalories = async (itemName: string): Promise<number> =>
 export const analyzeFoodImage = async (base64Image: string): Promise<ScanResult> => {
   const freshAi = getAi();
   const prompt = `Act as the Fridgeometer Ultra-Precision Molecular Scanner. Your primary priority is food safety and mould detection.;
+  
+    IMAGE ANALYSIS TASKS:
+  1. **MOULD DETECTION**: Examine the surface textures with extreme scrutiny. Look for fuzz, discolored spores, mycelium, or slime.
+  2. **BRAND & VARIETY**: Identify the exact brand and variety.
+  3. **PRICE LOGGING**: Estimate the current US market average unit price.
+  4. **NUTRITION**: Estimate calories per serving.
+  5. **LOGISTICS**: Determine category (Produce, Dairy, Meat, Beverage, Grains, Canned, Snacks, Other) and storage location (Fridge, Freezer, Pantry).
+  6. **EXPIRY**: Predict safety window (YYYY-MM-DD).
 
+  OUTPUT FORMAT: Return a RAW JSON object with these fields:
+  {
+    "name": string,
+    "expiryDate": string (YYYY-MM-DD),
+    "category": string,
+    "storageLocation": string,
+    "quantity": number,
+    "unit": string,
+    "confidence": number (0-1),
+    "brandInfo": string,
+    "mouldDetected": boolean,
+    "calories": integer,
+    "estimatedPrice": number
+  }
+  
+  Be strictly objective. If there is a risk of mould, mark 'mouldDetected' as true.`;
+  
   // 🔧 Step 1: Clean base64 string by removing the prefix
   const cleanBase64 = base64Image.replace(/^data:image\/\w+;base64,/, "");
 
