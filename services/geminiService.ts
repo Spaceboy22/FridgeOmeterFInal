@@ -96,7 +96,29 @@ export const analyzeFoodImage = async (base64Image: string): Promise<ScanResult>
       
       config: {
         responseMimeType: "application/json",
-        responseSchema: { /*...*/ }
+                responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            name: { type: Type.STRING },
+            expiryDate: { type: Type.STRING, description: "YYYY-MM-DD format" },
+            category: { 
+              type: Type.STRING, 
+              enum: ["Produce", "Dairy", "Meat", "Beverage", "Grains", "Canned", "Snacks", "Other"]
+            },
+            storageLocation: { 
+              type: Type.STRING, 
+              enum: ["Fridge", "Freezer", "Pantry"]
+            },
+            quantity: { type: Type.NUMBER },
+            unit: { type: Type.STRING },
+            confidence: { type: Type.NUMBER },
+            brandInfo: { type: Type.STRING },
+            mouldDetected: { type: Type.BOOLEAN },
+            calories: { type: Type.INTEGER },
+            estimatedPrice: { type: Type.NUMBER }
+          },
+          required: ["name", "expiryDate", "category", "storageLocation", "quantity", "unit", "confidence", "mouldDetected"]
+        }
       }
     });
     
