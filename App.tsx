@@ -503,7 +503,7 @@ const DashboardView: React.FC<{ stats: UserStats, user: UserProfile, inventory: 
           <p className="text-slate-400 text-xs font-bold uppercase tracking-widest group-hover:text-emerald-500 transition-colors">{user.isGamified ? 'Loot Freshness' : 'Health-Score'}</p>
           <div className="flex flex-col items-center">
              <p className={`text-5xl font-black ${user.isGamified && healthScore > 80 ? 'text-emerald-500' : ''}`}>{healthScore}%</p>
-             <p className="text-[8px] font-bold text-slate-400 uppercase mt-2 tracking-widest">Vault Purity Factor</p>
+             <p className="text-[8px] font-bold text-slate-400 uppercase mt-2 tracking-widest">Fridge Purity Factor</p>
           </div>
           <div className="h-2 w-full bg-slate-50 dark:bg-slate-900 rounded-full overflow-hidden">
             <div className={`h-full ${user.isGamified ? 'bg-violet-500' : 'bg-emerald-500'}`} style={{ width: `${healthScore}%` }}></div>
@@ -707,10 +707,10 @@ const InventoryView: React.FC<{
         </h2>
         <div className="flex gap-4">
           <button onClick={() => setShowAddMenu(true)} className={`px-6 py-4 ${user.isGamified ? 'bg-violet-600' : 'bg-emerald-600'} text-white font-black rounded-2xl shadow-xl uppercase tracking-widest text-[10px] italic flex items-center gap-2 hover:opacity-90 bouncy`}>
-            <IconPlus className="w-4 h-4" /> {user.isGamified ? 'Collect Loot' : 'Add Asset'}
+            <IconPlus className="w-4 h-4" /> {user.isGamified ? 'Collect Loot' : 'Add Item'}
           </button>
           <button onClick={() => setIsOpen(!isOpen)} className={`px-8 py-4 ${isOpen ? 'bg-slate-200 text-slate-600' : 'bg-slate-900 text-white'} font-black rounded-2xl shadow-xl transition-all uppercase tracking-widest text-[10px] italic bouncy`}>
-            {isOpen ? (user.isGamified ? 'Close Chest' : 'Secure Vault') : (user.isGamified ? 'Open Chest' : 'Open Vault')}
+            {isOpen ? (user.isGamified ? 'Close Chest' : 'Close Fridge') : (user.isGamified ? 'Open Chest' : 'Open Fridge')}
           </button>
         </div>
       </div>
@@ -993,7 +993,7 @@ const RecipesView: React.FC<{ inventory: FoodItem[], user: UserProfile }> = ({ i
     <div className="space-y-10 animate-in fade-in duration-500">
       <div className={`flex flex-col md:flex-row justify-between items-center gap-6 bg-white dark:bg-slate-800 p-8 ${user.isGamified ? 'rounded-mega-blob' : 'rounded-[3rem]'} border border-slate-100 dark:border-slate-700 shadow-sm`}>
         <div className="text-center md:text-left space-y-2">
-          <h2 className="text-3xl font-black italic uppercase tracking-tighter">{user.isGamified ? 'CULINARY QUESTS' : 'NEURAL ENGINE'}</h2>
+          <h2 className="text-3xl font-black italic uppercase tracking-tighter">{user.isGamified ? 'RECIPE RUSH' : 'SmartChef AI'}</h2>
           <p className="text-sm text-slate-500 font-medium">{user.isGamified ? 'Complete quests with your inventory loot!' : 'Synthesizing recipes using biological assets.'}</p>
         </div>
         <button 
@@ -1482,8 +1482,8 @@ const ChatHub: React.FC<{ user: UserProfile }> = ({ user }) => {
       <div className={`p-8 border-b border-slate-100 dark:border-slate-700 flex items-center gap-4 ${user.isGamified ? 'bg-violet-50 dark:bg-violet-950/20' : 'bg-emerald-50 dark:bg-emerald-950/20'}`}>
          <div className={`w-12 h-12 ${user.isGamified ? 'bg-violet-600' : 'bg-emerald-600'} rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg bouncy`}>🤖</div>
          <div>
-           <h3 className="text-xl font-black uppercase italic tracking-tighter">{user.isGamified ? 'Magic AI Guide' : 'Neural Assistant Hub'}</h3>
-           <p className={`text-[10px] font-black ${user.isGamified ? 'text-violet-600' : 'text-emerald-600'} uppercase tracking-widest`}>Protocol: Secure Link Active</p>
+           <h3 className="text-xl font-black uppercase italic tracking-tighter">{user.isGamified ? 'Fridgey' : 'Fridgey'}</h3>
+           <p className={`text-[10px] font-black ${user.isGamified ? 'text-violet-600' : 'text-emerald-600'} uppercase tracking-widest`}>Your zero-waste cooking companion</p>
          </div>
       </div>
       <div className="flex-1 overflow-y-auto p-8 space-y-6 no-scrollbar">
