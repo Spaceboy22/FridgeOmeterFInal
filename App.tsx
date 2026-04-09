@@ -703,7 +703,7 @@ const InventoryView: React.FC<{
     <div className="space-y-10">
       <div className="flex justify-between items-center">
         <h2 className="text-3xl font-black italic uppercase tracking-tighter">
-          {user.isGamified ? 'LOOT CHEST' : 'UNIT VAULT'}
+          {user.isGamified ? 'Loot Chest' : 'Your Fridge'}
         </h2>
         <div className="flex gap-4">
           <button onClick={() => setShowAddMenu(true)} className={`px-6 py-4 ${user.isGamified ? 'bg-violet-600' : 'bg-emerald-600'} text-white font-black rounded-2xl shadow-xl uppercase tracking-widest text-[10px] italic flex items-center gap-2 hover:opacity-90 bouncy`}>
