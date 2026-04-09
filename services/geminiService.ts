@@ -96,7 +96,7 @@ export const analyzeFoodImage = async (base64Image: string): Promise<ScanResult>
       
       config: {
         responseMimeType: "application/json",
-                responseSchema: {
+        responseSchema: {
           type: Type.OBJECT,
           properties: {
             name: { type: Type.STRING },
