@@ -701,6 +701,25 @@ const InventoryView: React.FC<{
 
   return (
     <div className="space-y-10">
+      {/* 🔥 FUTURISTIC AI SCAN OVERLAY */}
+    {loadingScan && (
+      <div className="fixed inset-0 z-[999] bg-black/80 backdrop-blur-md flex items-center justify-center">
+        <div className="flex flex-col items-center gap-6">
+          
+          {/* Glowing Spinner */}
+          <div className="relative">
+            <div className="w-16 h-16 border-4 border-violet-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="absolute inset-0 w-16 h-16 border-4 border-violet-300 opacity-30 rounded-full animate-ping"></div>
+          </div>
+
+          {/* AI Text */}
+          <p className="text-white text-xs font-black uppercase tracking-[0.4em] animate-pulse">
+            Neural Scan Active
+          </p>
+
+        </div>
+      </div>
+    )}
       <div className="flex justify-between items-center">
         <h2 className="text-3xl font-black italic uppercase tracking-tighter">
           {user.isGamified ? 'Loot Chest' : 'Your Fridge'}
@@ -786,21 +805,7 @@ const InventoryView: React.FC<{
         </div>
       </div>
 
-      {loadingScan && (
-  <div className="fixed inset-0 z-[999] bg-black/70 backdrop-blur-sm flex items-center justify-center">
-    <div className="flex flex-col items-center gap-4">
       
-      {/* Spinner */}
-      <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-      
-      {/* Optional text */}
-      <p className="text-white text-sm font-bold uppercase tracking-widest">
-        Scanning Food...
-      </p>
-
-    </div>
-  </div>
-)}
       {showAddMenu && (
         <div className="fixed inset-0 z-[500] bg-black/60 backdrop-blur-md flex items-center justify-center p-6 animate-in fade-in">
           <div className={`max-w-xl w-full bg-white dark:bg-slate-800 ${user.isGamified ? 'rounded-mega-blob' : 'rounded-[3rem]'} p-10 space-y-8 shadow-3xl overflow-y-auto max-h-[90vh]`}>
