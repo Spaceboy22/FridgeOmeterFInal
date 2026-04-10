@@ -77,10 +77,10 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (user && !user.hasSeenOnboarding) {
-      setShowOnboarding(true);
-    }
-  }, [user]);
+  if (user && !user.hasSeenOnboarding && view === 'welcome') {
+    setShowOnboarding(true);
+  }
+}, [user, view]);
 
   useEffect(() => {
     if (user) {
