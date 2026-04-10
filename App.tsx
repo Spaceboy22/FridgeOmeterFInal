@@ -1136,10 +1136,10 @@ const WelcomeView: React.FC<{ hasApiKey: boolean, onKeySelected: () => void, onC
           onClick={() => onComplete({ name: name || email.split('@')[0], email, language: 'English', tempUnit: 'Celsius', distUnit: 'km', country: 'US' })}
           className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-lg transition-all bouncy"
         >
-          {isLogin ? 'Establish Link' : 'Register Protocol'}
+          {isLogin ? 'Log In' : 'Register Account'}
         </button>
         <button onClick={() => setIsLogin(!isLogin)} className="w-full text-xs font-bold text-slate-500 hover:text-emerald-600 transition-colors uppercase tracking-widest">
-          {isLogin ? "Need a Protocol? Sign Up" : "Have a Link? Log In"}
+          {isLogin ? "Need an account? Sign Up" : "Already have an account? Log In"}
         </button>
       </div>
     </div>
