@@ -1028,7 +1028,7 @@ const RecipesView: React.FC<{ inventory: FoodItem[], user: UserProfile }> = ({ i
       {inventory.length === 0 ? (
         <div className="text-center py-20 opacity-20 flex flex-col items-center gap-4 grayscale">
           <IconChef className="w-20 h-20" />
-          <p className="text-lg font-black uppercase tracking-[0.5em]">{user.isGamified ? 'Loot Box Empty' : 'Add items in fridge to generate recipes'}</p>
+          <p className="text-lg font-black uppercase tracking-[0.5em]">{user.isGamified ? 'Chest Empty' : 'Add items in fridge to generate recipes'}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
