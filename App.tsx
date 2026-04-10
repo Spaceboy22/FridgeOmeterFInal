@@ -246,7 +246,7 @@ const App: React.FC = () => {
           <IconCamera className="w-7 h-7" />
         </button>
         <NavItem v="recipes" icon={IconChef} label="Recipes" gamifiedLabel="Quests" />
-        <NavItem v="chat" icon={IconChat} label="Assist" gamifiedLabel="Neural" />
+        <NavItem v="chat" icon={IconChat} label="Assist" gamifiedLabel="Assistant Fridgey" />
       </nav>
     </div>
   );
