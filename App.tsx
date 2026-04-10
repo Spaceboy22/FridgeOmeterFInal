@@ -1014,7 +1014,7 @@ const RecipesView: React.FC<{ inventory: FoodItem[], user: UserProfile }> = ({ i
       <div className={`flex flex-col md:flex-row justify-between items-center gap-6 bg-white dark:bg-slate-800 p-8 ${user.isGamified ? 'rounded-mega-blob' : 'rounded-[3rem]'} border border-slate-100 dark:border-slate-700 shadow-sm`}>
         <div className="text-center md:text-left space-y-2">
           <h2 className="text-3xl font-black italic uppercase tracking-tighter">{user.isGamified ? 'RECIPE RUSH' : 'SmartChef AI'}</h2>
-          <p className="text-sm text-slate-500 font-medium">{user.isGamified ? 'Complete quests with your inventory loot!' : 'Synthesizing recipes using biological assets.'}</p>
+          <p className="text-sm text-slate-500 font-medium">{user.isGamified ? 'Complete recipe quests with your chest loot!' : 'Creating recipes using items in fridge.'}</p>
         </div>
         <button 
           onClick={fetchRecipes} 
