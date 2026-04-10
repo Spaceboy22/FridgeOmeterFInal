@@ -183,7 +183,7 @@ const App: React.FC = () => {
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className={`w-8 h-8 ${user.isGamified ? 'bg-violet-600' : 'bg-emerald-600'} rounded-lg flex items-center justify-center text-white text-xl bouncy`}>🧊</div>
-            <h1 className="text-xl font-bold tracking-tight">{user.isGamified ? 'Fridge Hero' : 'Fridgeometer'}</h1>
+            <h1 className="text-xl font-bold tracking-tight">{user.isGamified ? 'Fridgeometer' : 'Fridgeometer'}</h1>
           </div>
           <div className="flex items-center gap-4">
              <button 
