@@ -1122,8 +1122,8 @@ const WelcomeView: React.FC<{ hasApiKey: boolean, onKeySelected: () => void, onC
       <div className="max-w-md w-full bg-white dark:bg-slate-900 p-10 rounded-[2.5rem] space-y-8 shadow-2xl border border-slate-100 dark:border-slate-800">
         <div className="text-center space-y-2">
           <div className="w-16 h-16 bg-emerald-600 rounded-2xl mx-auto flex items-center justify-center text-3xl shadow-lg shadow-emerald-200 bouncy">🧊</div>
-          <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white">Fridgeometer</h2>
-          <p className="text-slate-500 text-sm">Sustainable Kitchen Assistant</p>
+          <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white">FridgeOMeter</h2>
+          <p className="text-slate-500 text-sm">Welcome to FridgeOMeter — Your Sustainable Kitchen Assistant</p>
         </div>
         <div className="space-y-4">
           {!isLogin && (
