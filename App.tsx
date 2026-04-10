@@ -810,7 +810,7 @@ const InventoryView: React.FC<{
         <div className="fixed inset-0 z-[500] bg-black/60 backdrop-blur-md flex items-center justify-center p-6 animate-in fade-in">
           <div className={`max-w-xl w-full bg-white dark:bg-slate-800 ${user.isGamified ? 'rounded-mega-blob' : 'rounded-[3rem]'} p-10 space-y-8 shadow-3xl overflow-y-auto max-h-[90vh]`}>
             <div className="flex justify-between items-center">
-              <h3 className="text-2xl font-black uppercase italic tracking-tighter">{user.isGamified ? 'Inventory Add' : 'New Asset Protocol'}</h3>
+              <h3 className="text-2xl font-black uppercase italic tracking-tighter">{user.isGamified ? 'Inventory Add' : 'Add Item'}</h3>
               <button onClick={() => setShowAddMenu(false)} className="p-2 hover:bg-slate-100 rounded-full bouncy"><IconX className="w-6 h-6" /></button>
             </div>
             <div className="grid grid-cols-2 gap-4">
