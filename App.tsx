@@ -262,7 +262,7 @@ const LoginWelcomeModal: React.FC<{ onDismiss: (neverShowAgain: boolean) => void
         <div className="text-center space-y-4 relative">
           <div className={`w-24 h-24 ${isGamified ? 'bg-violet-600' : 'bg-emerald-600'} rounded-[2rem] mx-auto flex items-center justify-center text-5xl shadow-2xl rotate-12 transition-transform hover:rotate-0 duration-700`}>🧊</div>
           <h2 className={`text-4xl font-black italic uppercase tracking-tighter ${isGamified ? 'text-violet-600' : ''}`}>Welcome!</h2>
-          <p className="text-slate-400 text-xs font-bold uppercase tracking-[0.2em]">{isGamified ? "Your Hero's Journey Starts Here" : "Your Sustainable Kitchen Assistant"}</p>
+          <p className="text-slate-400 text-xs font-bold uppercase tracking-[0.2em]">{isGamified ? "Your Hero's Journey Starts Here!" : "Your Sustainable Kitchen Assistant!"}</p>
         </div>
 
         <div className="grid grid-cols-1 gap-6 text-left">
